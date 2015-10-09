@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <title>gunmedown</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <link href="https://cdn.rawgit.com/cburgmer/jquery-shiftenter/v0.0.4/jquery.shiftenter.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>gunmedown</h1>
+    <p>
+      <ul>
+        <li><h2>Node:</h2></li>
+
+        <li><h3>Game Logic</h3></li>
+        <li>a shot just happened, what do I do?</li>
+        <li>use his azimuth,x,y,fov, as well as x,y of everyone else to determine a hit</li>
+        <li>player pressed the right key, update the players x position<li>
+        <li><h3>Client Logic<li>
+        <li>who’s connected to what?</li>
+        <li>where do i send this next push of game-state data?</li>
+        <li>I just received a bit of game-state data. </li>
+        <li><h3>UI Logic</h3></li>
+        <li>you first naviate to the site, what do you see?</li>
+        <li>how do you ‘register’?</li>
+        <li>say you want to quit, what do you do?</li>
+
+        <li><h2>HTML:</h2></li>
+        <li>canvas!</li>
+        <li>register?</li>
+        <li>splash</li>
+        <li>just html, not important</li>
+
+        <li><h2>Client JS:</h2></li>
+        <li>canvas! update!</li>
+        <li><small>control keypresses</small></li>
+        <li>gamepad.js</li>
+        <li>move player on the screen</li>
+        <li><small>send his changes to the server</small></li>
+        <li>only his changes? to save on bandwidth only send what needs to be changed</li>
+        <li>maybe if we go all out some sort of physics engine</li>
+        <li>or at least some sort of azimuth 360 degree movement of people so they can use their left joystick and the right A button to play the game</li>
+
+
+      </ul>
+    </p>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://cdn.rawgit.com/cburgmer/jquery-shiftenter/v0.0.4/jquery.shiftenter.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#m').shiftenter();
+      });
+      var socket = io();
+      $('form').submit(function(){
+        if ($('#m').val().length > 0) {
+          $('#m').val(
+             //$('#m').val().replace(/\n/g,"<br />")
+          );
+          socket.emit('chat message', $('#m').val());
+          $('#m').val('').focus();
+        }
+        return false;
+      });
+      $('button.btn-success').click(function () {
+        $('form').submit();
+      });
+      socket.on('chat message', function(msg){
+        $('#messages').append($('<pre />').text(msg));
+        $('#messages').scrollTop($('#messages').height());
+      });
+    </script>
+  </body>
+  
+</html>
