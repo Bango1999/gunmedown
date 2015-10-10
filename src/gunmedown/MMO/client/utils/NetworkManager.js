@@ -11,7 +11,6 @@ var networkManager = {
     connect: function (player) {
         mainPlayer = player;
         serverSocket = io.connect();
-        // connect to node server
         serverSocket.on('connect', onConnectedToServer);
 
         this.configureIncomingTraffic();
@@ -68,12 +67,12 @@ function onReceivePlayerId(mainPlayerID) {
     mainPlayer.uid = mainPlayerID;
     console.log("mon id", mainPlayerID)
 }
-// player connected
+
 function onPlayerConnected(otherPlayer){
     console.log('a player is connected', otherPlayer);
     onOtherPlayerConnectedCallback(otherPlayer);
 }
-// player moved
+
 function onOtherPlayerMoved(movementInfo){
     onOtherPlayerMove(movementInfo);
 }
