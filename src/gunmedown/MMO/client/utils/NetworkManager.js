@@ -68,7 +68,7 @@ function onReceivePlayerId(mainPlayerID) {
     mainPlayer.uid = mainPlayerID;
     console.log("mon id", mainPlayerID)
 }
-
+// player connected
 function onPlayerConnected(otherPlayer){
     console.log('a player is connected', otherPlayer);
     onOtherPlayerConnectedCallback(otherPlayer);
