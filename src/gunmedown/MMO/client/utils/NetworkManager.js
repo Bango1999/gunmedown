@@ -1,4 +1,4 @@
-'use stric';
+'use strict';
 
 var serverSocket, mainPlayer;
 var onOtherPlayerConnectedCallback;
@@ -11,6 +11,7 @@ var networkManager = {
     connect: function (player) {
         mainPlayer = player;
         serverSocket = io.connect();
+        // connect to node server
         serverSocket.on('connect', onConnectedToServer);
 
         this.configureIncomingTraffic();
@@ -22,7 +23,7 @@ var networkManager = {
         serverSocket.on('SERVER_PLAYER_CONNECTED', onPlayerConnected);
         serverSocket.on('SERVER_PLAYER_LIST', onReceivePlayerList);
         serverSocket.on('SERVER_OTHER_PLAYER_MOVED', onOtherPlayerMoved);
-      //i have this function loaded on this file but not other files
+        //i have this function loaded on this file but not other files
         //serverSocket.on('SERVER_OTHER_PLAYER_SHOT', onOtherPlayerShot);
         serverSocket.on('SERVER_PLAYER_CHAT_MESSAGE', onReceiveChatMessage);
     },
