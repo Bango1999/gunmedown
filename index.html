@@ -1,76 +1,139 @@
 <!doctype html>
 <html>
   <head>
-    <title>gunmedown</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-    <link href="https://cdn.rawgit.com/cburgmer/jquery-shiftenter/v0.0.4/jquery.shiftenter.css" rel="stylesheet" />
-  </head>
-  <body>
-    <h1>gunmedown</h1>
-    <p>
-      <ul>
-        <li><h2>Node:</h2></li>
-
-        <li><h3>Game Logic</h3></li>
-        <li>a shot just happened, what do I do?</li>
-        <li>use his azimuth,x,y,fov, as well as x,y of everyone else to determine a hit</li>
-        <li>player pressed the right key, update the players x position<li>
-        <li><h3>Client Logic<li>
-        <li>who’s connected to what?</li>
-        <li>where do i send this next push of game-state data?</li>
-        <li>I just received a bit of game-state data. </li>
-        <li><h3>UI Logic</h3></li>
-        <li>you first naviate to the site, what do you see?</li>
-        <li>how do you ‘register’?</li>
-        <li>say you want to quit, what do you do?</li>
-
-        <li><h2>HTML:</h2></li>
-        <li>canvas!</li>
-        <li>register?</li>
-        <li>splash</li>
-        <li>just html, not important</li>
-
-        <li><h2>Client JS:</h2></li>
-        <li>canvas! update!</li>
-        <li><small>control keypresses</small></li>
-        <li>gamepad.js</li>
-        <li>move player on the screen</li>
-        <li><small>send his changes to the server</small></li>
-        <li>only his changes? to save on bandwidth only send what needs to be changed</li>
-        <li>maybe if we go all out some sort of physics engine</li>
-        <li>or at least some sort of azimuth 360 degree movement of people so they can use their left joystick and the right A button to play the game</li>
-
-
-      </ul>
-    </p>
+    <title>Gun Me Down Static File Server</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="https://cdn.rawgit.com/cburgmer/jquery-shiftenter/v0.0.4/jquery.shiftenter.js"></script>
+    <!-- jQueryUI -->
+      <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css">
+    <!-- Bootstrap -->
+      <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <!-- font awesome -->
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-k2/8zcNbxVIh5mnQ52A0r3a6jAgMGxFJFE2707UxGCk= sha512-ZV9KawG2Legkwp3nAlxLIVFudTauWuBpC10uEafMHYL0Sarrz5A7G79kXh5+5+woxQ5HM559XX2UZjMJ36Wplg==" crossorigin="anonymous">
+    <!-- HTML5 Shiv and Respond.js add IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv-printshiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+      <![endif]-->
+    <!-- custom CSS -->
+      <link href="//gunmedown-statics-134975.nitrousapp.com/gunmedown/css/main.css" type="text/css" rel="stylesheet">
+  </head>
+  
+  <body style="background:#ccc">
+<!---------------------------------------------------------------------------------->
+
+    <div id="game"></div>
+
+<!---------------------------------------------------------------------------------->
+    <!-- jQuery -->
+      <script src="//code.jquery.com/jquery-2.1.4.min.js" ></script>
+    <!-- Bootstrap -->
+      <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <!-- Canvas Engine -->
+      <script src="//canvasengine.net/cdn/dev/canvasengine-latest.all.min.js" ></script>
+    <!-- RPG-JS -->
+      <!--<script src="//rpgjs.com/cdn/rpgjs-latest.min.js" ></script>-->
+    <!-- Crafty js -->
+      <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+    <!-- Crafty Gamepad -->
+      <script type="text/javascript" src="//gunmedown-statics-134975.nitrousapp.com/gunmedown/crafty-game-pad/src/crafty.gamepad.js"></script>
+    <!-- custom js -->
+    <script src="//gunmedown-statics-134975.nitrousapp.com/gunmedown/js/main.js" ></script>
     <script>
-      $(document).ready(function() {
-        $('#m').shiftenter();
-      });
-      var socket = io();
-      $('form').submit(function(){
-        if ($('#m').val().length > 0) {
-          $('#m').val(
-             //$('#m').val().replace(/\n/g,"<br />")
-          );
-          socket.emit('chat message', $('#m').val());
-          $('#m').val('').focus();
-        }
-        return false;
-      });
-      $('button.btn-success').click(function () {
-        $('form').submit();
-      });
-      socket.on('chat message', function(msg){
-        $('#messages').append($('<pre />').text(msg));
-        $('#messages').scrollTop($('#messages').height());
-      });
+      Crafty.init(300,300, document.getElementById('game'));
+      Crafty.background('rgba(0,0,0,0.2)');
+
+      Crafty.e('Solid, 2D, Canvas, Color')
+        .attr({x: 0, y: 250, w: 250, h: 10})
+        .color('green');
+      
+      Crafty.e('Solid, 2D, Canvas, Color, Gravity')
+        .attr({x: 50, y: -100, w: 50, h: 50})
+        .color('#F55')
+        //implements multiway
+        .gravity('Solid');
+
+      Crafty.e('Solid, 2D, Canvas, Color, Multiway, Gravity')
+        .attr({x: 0, y: 0, w: 50, h: 50})
+        .color('#F00')
+        //implements multiway
+        .multiway(3, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180})
+        .gravity('Solid')
+        //.gravityConst(0.01);
+      
+      Crafty.e("2D, Collision")
+        .checkHits('Solid') // check for collisions with entities that have the Solid component in each frame
+        .bind("HitOn", function(hitData) {
+          console.log("Collision with Solid entity occurred for the first time.");
+        })
+        .bind("HitOff", function(comp) {
+          console.log("Collision with Solid entity ended.");
+        });
+      
+      Crafty.e("2D, Collision").collision([50,50], [100,100], [50,100]);
+      
+//       Game = {
+//         // This defines our grid's size and the size of each of its tiles
+//         map_grid: {
+//           width:  30,
+//           height: 30,
+//           tile: {
+//             width:  20,
+//             height: 20
+//           }
+//         },
+
+//         // The total width of the game screen. Since our grid takes up the entire screen
+//         //  this is just the width of a tile times the width of the grid
+//         width: function() {
+//           return this.map_grid.width * this.map_grid.tile.width;
+//         },
+
+//         // The total height of the game screen. Since our grid takes up the entire screen
+//         //  this is just the height of a tile times the height of the grid
+//         height: function() {
+//           return this.map_grid.height * this.map_grid.tile.height;
+//         },
+
+//         // Initialize and start our game
+//         start: function() {
+//           // Start crafty and set a background color so that we can see it's working
+//           Crafty.init(Game.width(), Game.height());
+//           Crafty.background('rgb(249, 223, 125)');
+
+//           // Place a tree at every edge square on our grid of tiles
+//           for (var x = 0; x < Game.map_grid.width; x++) {
+//             for (var y = 0; y < Game.map_grid.height; y++) {
+//               var at_edge = x == 0 || x == Game.map_grid.width - 1 || y == 0 || y == Game.map_grid.height - 1;
+
+//               if (at_edge) {
+//                 // Place a tree entity at the current tile
+//                 Crafty.e('2D, Canvas, Color')
+//                   .attr({
+//                     x: x * Game.map_grid.tile.width,
+//                     y: y * Game.map_grid.tile.height,
+//                     w: Game.map_grid.tile.width,
+//                     h: Game.map_grid.tile.height
+//                   })
+//                   .color('rgb(0, 0, 0)');
+//               } else if (Math.random() < 0.06) {
+//                 // Place a bush entity at the current tile
+//                 Crafty.e('2D, Canvas, Color')
+//                   .attr({
+//                     x: x * Game.map_grid.tile.width,
+//                     y: y * Game.map_grid.tile.height,
+//                     w: Game.map_grid.tile.width,
+//                     h: Game.map_grid.tile.height
+//                   })
+//                   .color('rgb(20, 185, 40)');
+//               }
+//             }
+//           }
+//         }
+//       }
+//       window.addEventListener('load', Game.start);
     </script>
   </body>
-  
 </html>
