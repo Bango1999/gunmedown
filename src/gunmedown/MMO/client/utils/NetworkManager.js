@@ -73,7 +73,7 @@ function onPlayerConnected(otherPlayer){
     console.log('a player is connected', otherPlayer);
     onOtherPlayerConnectedCallback(otherPlayer);
 }
-
+// player moved
 function onOtherPlayerMoved(movementInfo){
     onOtherPlayerMove(movementInfo);
 }
